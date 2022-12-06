@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #define FILE "file"
@@ -16,13 +17,31 @@ int main() {
     std::cout.rdbuf(outfile.rdbuf());
 
     // Solution
+    size_t count = 0;
     std::string inputLine;
     while (!std::cin.eof()) {
         std::getline(std::cin, inputLine);
         if (!std::cin.good()) {
             break;
         }
+
+        std::istringstream ss(inputLine);
+        char delim;
+        size_t firstBegin, firstEnd, secBegin, secEnd;
+        ss >> firstBegin >> delim >> firstEnd >> delim >> secBegin >> delim >> secEnd;
+
+        if (firstBegin <= secBegin && secEnd <= firstEnd) {
+            ++count;
+            continue;
+        }
+
+        if (secBegin <= firstBegin && firstEnd <= secEnd) {
+            ++count;
+            continue;
+        }
     }
+
+    std::cout << count;
 
     return 0;
 }
